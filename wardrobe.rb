@@ -16,16 +16,16 @@ class Wardrobe
     end
   end
 
+
   def sky
     @dress_count = 2
     @clothes.each do |dress|
-      temp_range = dress[@dress_count].gsub(/[^\d,-]/, "").split(',').map{|d| Integer(d)}
-      if (temp_range[0]..temp_range[1]).include?(@weather)
-        puts dress
-      else
-        false
-      end
-      @dress_count += 3
+      @temp_range = dress[@dress_count].gsub(/[^\d,-]/, "").split(',').map{|d| Integer(d)}
+      @range = @temp_range[0]..@temp_range[1]
+      @dress_count + 3
+
+      puts dress if @range.include?(@weather)
     end
   end
+
 end

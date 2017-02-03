@@ -5,7 +5,7 @@ if File.exist? ("data/wear.txt")
   file = File.open("data/wear.txt", "r:UTF-8")
   @filelines = file.readlines
   file.close
-  @filelines = @filelines.map! {|s| s.gsub("\n", "")}
+  @filelines.map! {|s| s.gsub("\n", "")}
 else
   puts "Файл не найден"
 end
