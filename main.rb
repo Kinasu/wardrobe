@@ -1,20 +1,24 @@
-require_relative "what_to_wear.rb"
+# require_relative "casualwear.rb"
 require_relative "wardrobe.rb"
 
-puts "Какая сейчас температура за окном?"
+if File.exist? ("data/wear.txt")
+  file = File.open("data/wear.txt", "r:UTF-8")
+  @filelines = file.readlines
+  file.close
+  @filelines = @filelines.map! {|s| s.gsub("\n", "")}
+else
+  puts "Файл не найден"
+end
 
-@sky = gets.to_i
+# Программа спрашивает у пользователя, какая сейчас температура, а потом генерирует
+# подходящий набор одежды, по одной шмотке каждого типа. Например шапка из зайца,
+# меховая куртка, теплые джинсы, зимние ботинки.
 
-wardrobe = Wardrobe.new
-wardrobe.open_files
-wardrobe.clear
+puts "Какая погода сейчас за окном?"
+@weather = gets.to_i
 
-wear = What_to_wear.new(wardrobe.clothes)
+puts "Можем предложить вам следующие вещи: "
 
-wear.temperature(@sky)
-sleep 1
-puts
-puts "Могу предложить Вам: "
-wear.dressing
-sleep 1
-puts "Хорошей прогулки!:)"
+wardrobe = Wardrobe.new(@filelines, @weather)
+wardrobe.wear
+wardrobe.sky
