@@ -1,21 +1,44 @@
 class Wardrobe
-  def initialize(goods,weather)
-    @goods = goods
-    @weather = weather
-  end
+  def initialize(path_data_dir)
+    files = Dir.entries(path_data_dir)
 
+    #создаем пустой массив для хранения вещей
+    @clothes_items = []
 
-  def sky
-    @wear = []
-    @goods.each do |dress|
-      @temp_range = dress[2].gsub(/[^\d,-]/, "").split(',').map{|d| Integer(d)}
-      @range = @temp_range[0]..@temp_range[1]
-
-      @wear << dress if @range.include?(@weather)
+    for file in files
+      file_data = File.new(path_data_dir + file, 'r:UTF-8')
+      if file.include?(".txt")
+        #читаем в файле каждую строку и записываем ее в переменную
+        filelines = file_data.readlines
+        file_data.close
+        filelines.map! {|s| s.gsub("\n", "")}
+        #каждую строку передаем в массив с вещами
+        temp_range = filelines[2].gsub(/[^\d,-]/, "").split(',')
+        .map{|d| d.to_i}
+        @clothes_items << ClothesItem.new(
+          filelines[0], filelines[1], temp_range[0]..temp_range[1]
+        )
+      end
     end
   end
 
-  def itemcloth
-    puts @wear.uniq { |s| s[1] }
+  def items_of_type(type)
+
+    @clothes_items.select { |item| item.type == type }
   end
+
+  def suit(temperature)
+    kit = []
+    @clothes_items.each do |item|
+      kit << item if item.suitable?(temperature)
+    end
+    kit
+  end
+
+  def clothes_items_types
+    @types = []
+    @clothes_items.each { |item| @types << item.type }
+    @types.uniq!
+  end
+
 end
