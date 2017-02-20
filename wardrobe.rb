@@ -22,11 +22,12 @@ class Wardrobe
     end
   end
 
+  # Сортировка вещей по типу
   def items_of_type(type)
-
     @clothes_items.select { |item| item.type == type }
   end
 
+  # Сортировка вещей по погоде(температуре)
   def suit(temperature)
     kit = []
     @clothes_items.each do |item|
@@ -35,10 +36,10 @@ class Wardrobe
     kit
   end
 
+  # Типы вещей
   def clothes_items_types
     @types = []
     @clothes_items.each { |item| @types << item.type }
     @types.uniq!
   end
-
 end
