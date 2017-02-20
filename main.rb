@@ -11,5 +11,14 @@ puts "Можем предложить вам следующие вещи: "
 
 wardrobe = Wardrobe.new(path_data_dir)
 
-p wardrobe.suit(weather)
+sky = wardrobe.suit(weather)
+types = wardrobe.clothes_items_types
 
+kit = []
+
+types.each do |type|
+	kit = wardrobe.items_of_type(type)
+	new_kit = kit & sky
+	new_kit = new_kit.sample 
+	puts "#{new_kit.name}\n#{new_kit.type}\n#{new_kit.temperature_range}"
+end
