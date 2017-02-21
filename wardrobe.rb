@@ -27,13 +27,24 @@ class Wardrobe
     @clothes_items.select { |item| item.type == type }
   end
 
-  # Сортировка вещей по погоде(температуре)
+  # Сортировка вещей по погоде(температуре), типам и
+  # метод выбирает случайную вещь из каждого типа.
   def suit(temperature)
+    sky = []
     kit = []
+
     @clothes_items.each do |item|
-      kit << item if item.suitable?(temperature)
+      sky << item if item.suitable?(temperature)
     end
-    kit
+    sky
+
+    types = clothes_items_types
+    types.each do |type|
+      kit = items_of_type(type)
+      new_kit = kit & sky
+      new_kit = new_kit.sample
+      puts "#{new_kit.name}\n#{new_kit.type}\n#{new_kit.temperature_range}"
+    end
   end
 
   # Типы вещей
