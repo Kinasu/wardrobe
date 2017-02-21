@@ -37,7 +37,6 @@ class Wardrobe
     @clothes_items.each do |item|
       sky << item if item.suitable?(temperature)
     end
-    # sky
 
     types.each do |type|
       kit = items_of_type(type)
