@@ -32,17 +32,16 @@ class Wardrobe
   def suit(temperature)
     sky = []
     kit = []
+    types = clothes_items_types
 
     @clothes_items.each do |item|
       sky << item if item.suitable?(temperature)
     end
-    sky
+    # sky
 
-    types = clothes_items_types
     types.each do |type|
       kit = items_of_type(type)
-      new_kit = kit & sky
-      new_kit = new_kit.sample
+      new_kit = (kit & sky).sample
       puts "#{new_kit.name}\n#{new_kit.type}\n#{new_kit.temperature_range}"
     end
   end
