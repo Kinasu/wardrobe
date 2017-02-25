@@ -2,23 +2,24 @@ class Wardrobe
   def initialize(path_data_dir)
     files = Dir.entries(path_data_dir)
 
-    #создаем пустой массив для хранения вещей
+    # создаем пустой массив для хранения вещей
     @clothes_items = []
 
     for file in files
       file_data = File.new(path_data_dir + file, 'r:UTF-8')
-      if file.include?(".txt")
-        #читаем в файле каждую строку и записываем ее в переменную
+       if file.include?('.txt')
+        # next file.include?('.txt')
+        # читаем в файле каждую строку и записываем ее в переменную
         filelines = file_data.readlines
         file_data.close
-        filelines.map! {|s| s.gsub("\n", "")}
-        #каждую строку передаем в массив с вещами
-        temp_range = filelines[2].gsub(/[^\d,-]/, "").split(',')
-        .map{|d| d.to_i}
+        filelines.map! { |s| s.gsub("\n", "") }
+        # каждую строку передаем в массив с вещами
+        temp_range = filelines[2].gsub(/[^\d,-]/, '').split(',')
+        .map{ |d| d.to_i }
         @clothes_items << ClothesItem.new(
           filelines[0], filelines[1], temp_range[0]..temp_range[1]
         )
-      end
+       end
     end
   end
 
@@ -32,19 +33,19 @@ class Wardrobe
   def suit(temperature)
     sky = []
     kit = []
-    types = clothes_items_types
+    @new_kit = []
 
-    @clothes_items.each do |item|
-      sky << item if item.suitable?(temperature)
-    end
+    sky << @clothes_items.select{ |item| item.suitable?(temperature) }
 
-    types.each do |type|
+    clothes_items_types.each do |type|
       kit = items_of_type(type)
-      new_kit = (kit & sky).sample
-      puts "#{new_kit.name}\n#{new_kit.type}\n#{new_kit.temperature_range}"
+      @new_kit << (kit & sky.flatten).sample
     end
   end
 
+  def goods
+    @new_kit = @new_kit
+  end
   # Типы вещей
   def clothes_items_types
     @types = []

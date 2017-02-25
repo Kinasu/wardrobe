@@ -10,4 +10,6 @@ class ClothesItem
   def suitable?(temperature)
     @temperature_range.include?(temperature)
   end
+
+
 end
